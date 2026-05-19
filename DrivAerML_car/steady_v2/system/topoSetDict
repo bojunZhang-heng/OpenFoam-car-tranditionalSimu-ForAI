@@ -1,0 +1,99 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2212                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+
+// Actions: create named faceSets for the six boundaries
+actions
+(
+    // 1) Inlet (x = xmin)
+    {
+        name inletFaces;
+        type faceSet;
+        action new;
+        source boxToFace;
+        sourceInfo
+        {
+            // 修正：(xmin ymin zmin) (xmax ymax zmax)
+            box (-15.06 -15 -0.344482) (-15 15 15);
+        }
+    }
+
+    // 2) Outlet (x = xmax)
+    {
+        name outletFaces;
+        type faceSet;
+        action new;
+        source boxToFace;
+        sourceInfo
+        {
+            // 修正：(xmin ymin zmin) (xmax ymax zmax)
+            box (45 -15 -0.344482) (45.06 15 15);
+        }
+    }
+
+    // 3) Top (z = zmax)
+    {
+        name topFaces;
+        type faceSet;
+        action new;
+        source boxToFace;
+        sourceInfo
+        {
+            // 修正：(xmin ymin zmin) (xmax ymax zmax)
+            box (-15 -15 15) (45 15 15.06);
+        }
+    }
+
+    // 4) Side1 (y = ymax)
+    {
+        name sideFaces1;
+        type faceSet;
+        action new;
+        source boxToFace;
+        sourceInfo
+        {
+            // 修正：(xmin ymin zmin) (xmax ymax zmax)
+            box (-15 15 -0.344482) (45 15.06 15);
+        }
+    }
+
+    // 5) Side2 (y = ymin)
+    {
+        name sideFaces2;
+        type faceSet;
+        action new;
+        source boxToFace;
+        sourceInfo
+        {
+            // 修正：(xmin ymin zmin) (xmax ymax zmax)
+            box (-15 -15.06 -0.344482) (45 -15 15);
+        }
+    }
+
+    // 6) Ground (z = zmin)
+    {
+        name groundFaces;
+        type faceSet;
+        action new;
+        source boxToFace;
+        sourceInfo
+        {
+            // 地面在 z = -0.344482
+            // 我们定义一个厚度仅为 0.001 的盒子
+            // 范围从 -0.345 到 -0.344
+            // 这样可以确保只抓到面心坐标精确在这个平面上的面
+            box (-15 -15 -0.345) (45 15 -0.3442);
+        }
+    }
+);
+

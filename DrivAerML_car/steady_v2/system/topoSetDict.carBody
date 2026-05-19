@@ -1,0 +1,91 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2212                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+
+actions
+(
+    // ==========================================================
+    // 第一步：获取所有边界上的面（包括外部方框和内部车身）
+    // ==========================================================
+    {
+        name    allBoundaryFaces;
+        type    faceSet;
+        action  new;
+        source  boundaryToFace;
+        sourceInfo
+        {
+            // 此时还没有自定义 patch，所以不写具体名字，匹配所有当前边界
+            patchNames (".*"); 
+        }
+    }
+
+    // ==========================================================
+    // 第二步：将所有边界复制到 carBody 这个集合里
+    // ==========================================================
+    {
+        name    carBody;
+        type    faceSet;
+        action  new;
+        source  faceToFace;  // 注意：这里必须写 source 类型
+        sourceInfo
+        {
+            set allBoundaryFaces; // 这里写你引用的集合名字
+        }
+    }
+
+    // ==========================================================
+    // 第三步：从 carBody 中减去你已经做好的 6 个外部边界 set
+    // ==========================================================
+    {
+        name    carBody;
+        type    faceSet;
+        action  subtract;
+        source  faceToFace;
+        sourceInfo { set inletFaces; }
+    }
+    {
+        name    carBody;
+        type    faceSet;
+        action  subtract;
+        source  faceToFace;
+        sourceInfo { set outletFaces; }
+    }
+    {
+        name    carBody;
+        type    faceSet;
+        action  subtract;
+        source  faceToFace;
+        sourceInfo { set topFaces; }
+    }
+    {
+        name    carBody;
+        type    faceSet;
+        action  subtract;
+        source  faceToFace;
+        sourceInfo { set sideFaces1; }
+    }
+    {
+        name    carBody;
+        type    faceSet;
+        action  subtract;
+        source  faceToFace;
+        sourceInfo { set sideFaces2; }
+    }
+    {
+        name    carBody;
+        type    faceSet;
+        action  subtract;
+        source  faceToFace;
+        sourceInfo { set groundFaces; }
+    }
+);
