@@ -4,9 +4,8 @@ steady_test/
 test.vtk
 transient-komegaSSTIDDES/
 
-# 忽略整个 DrivAerML_car 目录下的所有内容
-DrivAerML_car/**/*
 
-# 但强制保留 steady_v2/system 目录及其下所有文件
+DrivAerML_car/*
+!DrivAerML_car/steady_v2/
+DrivAerML_car/steady_v2/*
 !DrivAerML_car/steady_v2/system/
-!DrivAerML_car/steady_v2/system/**
