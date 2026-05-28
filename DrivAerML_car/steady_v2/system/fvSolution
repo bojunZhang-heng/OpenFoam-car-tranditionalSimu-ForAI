@@ -62,7 +62,7 @@ solvers
 SIMPLE
 {
     // non-orthogonality up to ~70 in your mesh -> need correctors
-    nNonOrthogonalCorrectors 2;
+    nNonOrthogonalCorrectors 3;
     consistent yes;
 }
 
