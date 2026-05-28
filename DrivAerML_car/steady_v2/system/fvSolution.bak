@@ -64,7 +64,6 @@ SIMPLE
     // non-orthogonality up to ~70 in your mesh -> need correctors
     nNonOrthogonalCorrectors 3;
     consistent yes;
-
     residualControl
     {
         p           1e-6;
